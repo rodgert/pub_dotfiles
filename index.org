@@ -1,1 +1,13 @@
+* This is where all of my publicly visible dotfile stuff is kept
+* Things that need to be done here
 ** TODO Write Me!
+* The preliminaries
+** zsh and Oh My Zsh
+  First install Oh My Zsh
+#+begin_src sh
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#+end_src
+** Publish ~/.zshrc
+#+begin_src sh
+  stow -d .dotfiles zsh
+#+end_src
