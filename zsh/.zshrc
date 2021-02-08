@@ -1,5 +1,13 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+if which osascript >/dev/null 2>&1
+then
+    export ON_A_MAC=1
+fi
+
+if [ ! -d /usr/local/Cellar -a -n "$ON_A_MAC" ]
+then
+    echo "ZOMG! No Homebrew installed! Installing now..."
+    echo 'ruby -e "`curl -fsSL https://raw.github.com/mxcl/homebrew/go/install`"'
+fi
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/rodgert/.oh-my-zsh
@@ -94,8 +102,7 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# Set personal aliases, overriding those provided by oh-my-zsh libs, plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
@@ -111,8 +118,17 @@ if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/completion.zsh
 fi
 
-if [ -w $HOME/opt/bin ]; then
-  PATH=$HOME/opt/bin:$PATH
+if [ -w $HOME/usr/bin ]; then
+  PATH=$HOME/usr/bin:$PATH
 fi
 
 eval "$(thefuck --alias)"
+
+# Alias for myrepos
+alias mrs='mr status'
+alias mrp='mr push'
+alias mrr='mr register'
+
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
