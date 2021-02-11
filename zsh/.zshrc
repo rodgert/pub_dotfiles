@@ -1,6 +1,6 @@
 if which osascript >/dev/null 2>&1
 then
-    export ON_A_MAC=1
+    export ON_A_MAC="true"
 fi
 
 if [ ! -d /usr/local/Cellar -a -n "$ON_A_MAC" ]
@@ -10,7 +10,7 @@ then
 fi
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/rodgert/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -63,7 +63,15 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(brew
+
+if [[ -v ON_A_MAC ]]; then
+	export PLATFORM_PLUGINS="brew"
+fi
+
+echo $PLATFORM_PLUGINS
+
+plugins=($PLATFORM_PLUGINS
+	 colored-man-pages
          colorize
          copybuffer
          dirhistory
@@ -124,11 +132,15 @@ fi
 
 eval "$(thefuck --alias)"
 
+[ -s "$HOME/.scm_breeze/scm_breeze.sh" ] && source "$HOME/.scm_breeze/scm_breeze.sh"
+
 # Alias for myrepos
 alias mrs='mr status'
 alias mrp='mr push'
 alias mrr='mr register'
 
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+if [[ -v ON_A_MAC ]]; then
+	export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+fi
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
